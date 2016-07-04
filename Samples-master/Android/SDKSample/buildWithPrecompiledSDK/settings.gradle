@@ -1,0 +1,2 @@
+include ':JumpingSumo'
+project(':JumpingSumo').projectDir = new File('../JumpingSumo/')
