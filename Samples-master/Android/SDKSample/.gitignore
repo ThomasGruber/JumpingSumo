@@ -12,3 +12,4 @@
 /buildWithLocalSDK/build/
 /buildWithPrecompiledSDK/build/
 **/.idea
+.idea
