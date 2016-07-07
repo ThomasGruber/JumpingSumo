@@ -235,7 +235,7 @@ public class JSDrone {
         }
     }
 
-    
+
     /**
      * Set the speed of the Jumping Sumo
      * Note that {@link JSDrone#setFlag(byte)} should be set to 1 in order to take in account the speed value

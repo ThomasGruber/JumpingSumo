@@ -100,12 +100,6 @@ public class JSActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.jumpBT).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                mJSDrone.jump();
-            }
-        });
-
         findViewById(R.id.jump_longBt).setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 mJSDrone.jump_long();
