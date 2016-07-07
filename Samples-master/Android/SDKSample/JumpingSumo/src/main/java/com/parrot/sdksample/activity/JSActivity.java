@@ -90,6 +90,18 @@ public class JSActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.jump_longBt).setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                mJSDrone.jump_long();
+            }
+        });
+
+        findViewById(R.id.jump_highBt).setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                mJSDrone.jump_high();
+            }
+        });
+
         findViewById(R.id.downloadBt).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 mJSDrone.getLastFlightMedias();
