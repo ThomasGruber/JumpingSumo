@@ -1,6 +1,9 @@
 package com.parrot.sdksample.drone;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -22,13 +25,15 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
+import android.content.Context;
 
 public class SDCardModule {
 
+    Context context;
     private static final String TAG = "SDCardModule";
 
     private static final String DRONE_MEDIA_FOLDER = "internal_000";
-    private static final String MOBILE_MEDIA_FOLDER = "/ARSDKMedias/";
+    private static final String MOBILE_MEDIA_FOLDER = "/JumpingSumo/";
 
     public interface Listener {
         /**
@@ -319,6 +324,7 @@ public class SDCardModule {
         for (Listener listener : listenersCpy) {
             listener.onDownloadComplete(mediaName);
         }
+        //context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://" + Environment.getExternalStorageDirectory())));
     }
     //endregion notify listener block
 
@@ -332,6 +338,7 @@ public class SDCardModule {
                 notifyDownloadProgressed(media.getName(), progressInt);
             }
         }
+
     };
 
     private final ARDataTransferMediasDownloaderCompletionListener mDLCompletionListener = new ARDataTransferMediasDownloaderCompletionListener() {

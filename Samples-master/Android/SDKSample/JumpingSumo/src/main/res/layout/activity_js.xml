@@ -86,4 +86,27 @@
         android:layout_toRightOf="@+id/textView"
         android:layout_toEndOf="@+id/textView"
         android:textColor="#ff0000" />
+
+    <Button
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:text="jump"
+        android:id="@+id/jumpBT"
+        android:layout_above="@+id/forwardBt"
+        android:layout_alignLeft="@+id/forwardBt"
+        android:layout_alignStart="@+id/forwardBt" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/PicTaken"
+        android:textColor="#ffffff"
+        android:layout_alignBottom="@+id/forwardBt"
+        android:layout_below="@+id/takePictureBt"
+        android:layout_alignRight="@+id/takePictureBt"
+        android:layout_alignEnd="@+id/takePictureBt"
+        android:layout_toRightOf="@+id/rightBt"
+        android:layout_toEndOf="@+id/rightBt"
+        android:text="nix" />
 </RelativeLayout>
