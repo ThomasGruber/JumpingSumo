@@ -3,7 +3,11 @@ package com.parrot.sdksample.activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.Context;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -19,6 +23,8 @@ import com.parrot.sdksample.R;
 import com.parrot.sdksample.drone.JSDrone;
 import com.parrot.sdksample.view.JSVideoView;
 
+import java.io.File;
+
 public class JSActivity extends AppCompatActivity {
     private static final String TAG = "JSActivity";
     private JSDrone mJSDrone;
@@ -29,9 +35,12 @@ public class JSActivity extends AppCompatActivity {
     private JSVideoView mVideoView;
 
     private TextView mBatteryLabel;
+    private TextView mPicTaken;
 
     private int mNbMaxDownload;
     private int mCurrentDownloadIndex;
+
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +96,13 @@ public class JSActivity extends AppCompatActivity {
         findViewById(R.id.takePictureBt).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 mJSDrone.takePicture();
+                Log.i(TAG, "take Picture");
+            }
+        });
+
+        findViewById(R.id.jumpBT).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                mJSDrone.jump();
             }
         });
 
@@ -221,6 +237,7 @@ public class JSActivity extends AppCompatActivity {
         });
 
         mBatteryLabel = (TextView) findViewById(R.id.batteryLabel);
+        mPicTaken = (TextView) findViewById(R.id.PicTaken);
     }
 
     private final JSDrone.Listener mJSListener = new JSDrone.Listener() {
@@ -250,8 +267,12 @@ public class JSActivity extends AppCompatActivity {
 
         @Override
         public void onPictureTaken(ARCOMMANDS_JUMPINGSUMO_MEDIARECORDEVENT_PICTUREEVENTCHANGED_ERROR_ENUM error) {
-            Log.i(TAG, "Picture has been taken");
+            mPicTaken.setText("Picture taken");
+            Log.i(TAG, "123Picture has been taken");
+
+
         }
+
 
         @Override
         public void configureDecoder(ARControllerCodec codec) {
@@ -302,6 +323,16 @@ public class JSActivity extends AppCompatActivity {
                 mDownloadProgressDialog.dismiss();
                 mDownloadProgressDialog = null;
             }
+
+            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            //TODO: Pfadangabe nur an einer Stelle! (SDCardModule.java Zeile 36)
+            File f = new File(Environment.getExternalStorageDirectory() + "/JumpingSumo/" + mediaName);
+            Log.i(TAG, "MediaScanIntent file: " + f.toString());
+            Uri contentUri = Uri.fromFile(f);
+            mediaScanIntent.setData(contentUri);
+            sendBroadcast(mediaScanIntent);
+            mJSDrone.deletePic();
+
         }
     };
 }
