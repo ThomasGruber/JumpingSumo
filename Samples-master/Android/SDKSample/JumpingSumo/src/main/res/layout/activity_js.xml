@@ -80,9 +80,27 @@
         android:layout_height="wrap_content"
         android:text="Jump_high"
         android:id="@+id/jump_highBt"
-        android:layout_below="@+id/takePictureBt"
-        android:layout_alignRight="@+id/forwardBt"
-        android:layout_alignEnd="@+id/forwardBt" />
+        android:layout_above="@+id/forwardBt"
+        android:layout_alignLeft="@+id/forwardBt"
+        android:layout_alignStart="@+id/forwardBt" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="animation"
+        android:id="@+id/animationBt"
+        android:layout_above="@+id/downloadBt"
+        android:layout_alignRight="@+id/turnaroundBt"
+        android:layout_alignEnd="@+id/turnaroundBt" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="turn around"
+        android:id="@+id/turnaroundBt"
+        android:layout_below="@+id/jump_highBt"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -112,11 +130,23 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/PicTaken"
         android:textColor="#ffffff"
-        android:layout_alignBottom="@+id/forwardBt"
         android:layout_below="@+id/takePictureBt"
         android:layout_alignRight="@+id/takePictureBt"
         android:layout_alignEnd="@+id/takePictureBt"
         android:layout_toRightOf="@+id/rightBt"
         android:layout_toEndOf="@+id/rightBt"
-        android:text="nix" />
+        android:text="nix"
+        android:layout_above="@+id/forwardBt" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Record"
+        android:id="@+id/recordBt"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/takePictureBt"
+        android:layout_toStartOf="@+id/takePictureBt"
+        android:layout_marginRight="31dp"
+        android:layout_marginEnd="31dp" />
 </RelativeLayout>
