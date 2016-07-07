@@ -45,9 +45,9 @@ public class JSDrone {
          * Called when the connection to the drone changes
          * Called in the main thread
          * @param state the state of the drone
+         *              i am a drone
          */
         void onDroneConnectionChanged(ARCONTROLLER_DEVICE_STATE_ENUM state);
-
         /**
          * Called when the battery charge changes
          * Called in the main thread
