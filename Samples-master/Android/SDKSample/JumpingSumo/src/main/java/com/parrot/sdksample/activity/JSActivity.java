@@ -12,9 +12,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parrot.arsdk.arcommands.ARCOMMANDS_JUMPINGSUMO_MEDIARECORDEVENT_PICTUREEVENTCHANGED_ERROR_ENUM;
+import com.parrot.arsdk.arcommands.ARCOMMANDS_JUMPINGSUMO_MEDIARECORDEVENT_PICTUREEVENTCHANGED_EVENT_ENUM;
 import com.parrot.arsdk.arcontroller.ARCONTROLLER_DEVICE_STATE_ENUM;
 import com.parrot.arsdk.arcontroller.ARControllerCodec;
 import com.parrot.arsdk.arcontroller.ARFrame;
@@ -24,6 +27,7 @@ import com.parrot.sdksample.drone.JSDrone;
 import com.parrot.sdksample.view.JSVideoView;
 
 import java.io.File;
+import java.util.logging.Handler;
 
 public class JSActivity extends AppCompatActivity {
     private static final String TAG = "JSActivity";
@@ -89,20 +93,77 @@ public class JSActivity extends AppCompatActivity {
             }
         }
     }
-
+    int i = 0;
     private void initIHM() {
         mVideoView = (JSVideoView) findViewById(R.id.videoView);
 
         findViewById(R.id.takePictureBt).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 mJSDrone.takePicture();
+                Toast.makeText(getBaseContext(),"Picture was taken",Toast.LENGTH_LONG).show();
                 Log.i(TAG, "take Picture");
             }
         });
+        findViewById(R.id.recordBt).setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                i++;
+                Runnable r = new Runnable() {
+                    @Override
+                    public void run() {
+                        i = 0;
+                    }
+                };
+                if(i == 1){
+                    mJSDrone.record();
+                    Toast.makeText(getBaseContext(),"Recording a Video",Toast.LENGTH_LONG).show();
+                    ((Button)findViewById(R.id.recordBt)).setText("STOP");
 
-        findViewById(R.id.jumpBT).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                mJSDrone.jump();
+                }else if(i == 2){
+                    i = 0;
+                    mJSDrone.stop_recording();
+                    Toast.makeText(getBaseContext(),"Video stopped",Toast.LENGTH_LONG).show();
+                    ((TextView)findViewById(R.id.recordBt)).setText("Record");
+                }
+
+
+                Log.i(TAG, "record a Video");
+            }
+        });
+
+        findViewById(R.id.jump_longBt).setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                mJSDrone.jump_long();
+            }
+        });
+
+        findViewById(R.id.jump_highBt).setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                mJSDrone.jump_high();
+            }
+        });
+
+        findViewById(R.id.turnaroundBt).setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                i++;
+                Runnable r = new Runnable() {
+                    @Override
+                    public void run() {
+                        i = 0;
+                    }
+                };
+                if(i == 1){
+                    mJSDrone.turnaround();
+                }else if(i == 2){
+                    i = 0;
+                    mJSDrone.turnaround_2();
+                }
+
+            }
+        });
+
+        findViewById(R.id.animationBt).setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                mJSDrone.animation();
             }
         });
 
