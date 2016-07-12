@@ -256,9 +256,6 @@ public class JSActivity extends AppCompatActivity {
         @Override
         public void onPictureTaken(ARCOMMANDS_JUMPINGSUMO_MEDIARECORDEVENT_PICTUREEVENTCHANGED_ERROR_ENUM error) {
             mPicTaken.setText("Picture taken");
-            Log.i(TAG, "123Picture has been taken");
-
-
         }
 
 
@@ -319,7 +316,6 @@ public class JSActivity extends AppCompatActivity {
             Uri contentUri = Uri.fromFile(f);
             mediaScanIntent.setData(contentUri);
             sendBroadcast(mediaScanIntent);
-            mJSDrone.deletePic();
 
         }
     };

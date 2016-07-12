@@ -21,6 +21,7 @@ import com.parrot.arsdk.arcontroller.ARDeviceControllerStreamListener;
 import com.parrot.arsdk.arcontroller.ARFeatureCommon;
 import com.parrot.arsdk.arcontroller.ARFeatureJumpingSumo;
 import com.parrot.arsdk.arcontroller.ARFrame;
+import com.parrot.arsdk.ardatatransfer.ARDataTransferMedia;
 import com.parrot.arsdk.ardiscovery.ARDISCOVERY_PRODUCT_ENUM;
 import com.parrot.arsdk.ardiscovery.ARDISCOVERY_PRODUCT_FAMILY_ENUM;
 import com.parrot.arsdk.ardiscovery.ARDiscoveryDevice;
@@ -222,13 +223,6 @@ public class JSDrone {
         }
     }
 
-    public void deletePic() {
-        if ((mDeviceController != null) && (mState.equals(ARCONTROLLER_DEVICE_STATE_ENUM.ARCONTROLLER_DEVICE_STATE_RUNNING))) {
-            //TODO: delete 1(!) downloaded pic
-            Log.i(TAG,"pic xy deleted");
-        }
-    }
-
 
     /**
      * Set the speed of the Jumping Sumo
@@ -279,6 +273,10 @@ public class JSDrone {
 
     public void cancelGetLastFlightMedias() {
         mSDCardModule.cancelGetFlightMedias();
+    }
+
+    public void onDeleteFile(String mediaName) {
+        mSDCardModule.deleteLastReceivedPic(mediaName);
     }
 
     private ARDiscoveryDevice createDiscoveryDevice(@NonNull ARDiscoveryDeviceService service, ARDISCOVERY_PRODUCT_ENUM productType) {
@@ -401,9 +399,9 @@ public class JSDrone {
                 public void run() {
                     notifyDownloadComplete(mediaName);
                 }
+
             });
-
-
+            onDeleteFile(mediaName);
         }
     };
 
@@ -423,6 +421,7 @@ public class JSDrone {
                 }
             });
         }
+
 
         @Override
         public void onExtensionStateChanged(ARDeviceController deviceController, ARCONTROLLER_DEVICE_STATE_ENUM newState, ARDISCOVERY_PRODUCT_ENUM product, String name, ARCONTROLLER_ERROR_ENUM error) {

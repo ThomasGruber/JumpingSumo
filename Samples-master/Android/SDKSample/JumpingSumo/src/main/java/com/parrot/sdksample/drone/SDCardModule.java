@@ -195,6 +195,56 @@ public class SDCardModule {
         }
     }
 
+
+    public void deleteLastReceivedPic(final String mediaName) {
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    ArrayList<ARDataTransferMedia> mediaList = getMediaList();
+                    if ((mediaList != null) && !mIsCancelled) {
+                        //delete
+                        ARDataTransferMediasDownloader mediasDownloader = null;
+                        if (mDataTransferManager != null) {
+                            mediasDownloader = mDataTransferManager.getARDataTransferMediasDownloader();
+                        }
+
+                        for (ARDataTransferMedia media : mediaList) {
+                            if (media.getName().toString().equals(mediaName.toString())) {
+                                Log.i(TAG, "enter delete Files: " + media.getName() + " returns " + mediasDownloader.deleteMedia(media));
+                            }
+                        }
+                    }
+
+                }
+            }).start();
+            //____________
+
+
+
+        /*
+        if (mThreadIsRunning) {
+            Log.i(TAG, "enter delete Files1");
+            mIsCancelled = true;
+            ARDataTransferMediasDownloader mediasDownloader = null;
+            if (mDataTransferManager != null) {
+                Log.i(TAG, "enter delete Files2");
+                mediasDownloader = mDataTransferManager.getARDataTransferMediasDownloader();
+            }
+
+            if (mediasDownloader != null) {
+                Log.i(TAG, "enter delete Files3");
+                ArrayList<ARDataTransferMedia> mediaList = getMediaList();
+                Log.i(TAG, "delete Media Files Size: " + mediaList.size());
+
+                for (ARDataTransferMedia media : mediaList) {
+                    mediasDownloader.deleteMedia(media);
+                    Log.i(TAG, "delete file: " + media.getName());
+                }
+            }*/
+    }
+
+
     private ArrayList<ARDataTransferMedia> getMediaList() {
         ArrayList<ARDataTransferMedia> mediaList = null;
 
@@ -222,6 +272,7 @@ public class SDCardModule {
                 mediaList = null;
             }
         }
+        Log.i(TAG, "check Media Files Size: " + mediaList.size());
         return mediaList;
     }
 
@@ -301,6 +352,7 @@ public class SDCardModule {
             if (!mIsCancelled) {
                 mediasDownloader.getDownloaderQueueRunnable().run();
             }
+            //mediasDownloader.deleteMedia();
         }
     }
 
