@@ -39,7 +39,6 @@ public class JSActivity extends AppCompatActivity {
     private JSVideoView mVideoView;
 
     private TextView mBatteryLabel;
-    private TextView mPicTaken;
 
     private int mNbMaxDownload;
     private int mCurrentDownloadIndex;
@@ -286,7 +285,6 @@ public class JSActivity extends AppCompatActivity {
         });
 
         mBatteryLabel = (TextView) findViewById(R.id.batteryLabel);
-        mPicTaken = (TextView) findViewById(R.id.PicTaken);
     }
 
     private final JSDrone.Listener mJSListener = new JSDrone.Listener() {
@@ -312,11 +310,11 @@ public class JSActivity extends AppCompatActivity {
         @Override
         public void onBatteryChargeChanged(int batteryPercentage) {
             mBatteryLabel.setText(String.format("%d%%", batteryPercentage));
+            Log.i(TAG,"battery: " + String.format("%d%%", batteryPercentage));
         }
 
         @Override
         public void onPictureTaken(ARCOMMANDS_JUMPINGSUMO_MEDIARECORDEVENT_PICTUREEVENTCHANGED_ERROR_ENUM error) {
-            mPicTaken.setText("Picture taken");
         }
 
 
@@ -377,7 +375,6 @@ public class JSActivity extends AppCompatActivity {
             Uri contentUri = Uri.fromFile(f);
             mediaScanIntent.setData(contentUri);
             sendBroadcast(mediaScanIntent);
-
         }
     };
 }

@@ -217,7 +217,6 @@ public class JSDrone {
             } else {
                 mDeviceController.getFeatureJumpingSumo().sendMediaRecordPictureV2();
             }
-
         }
     }
 
@@ -278,7 +277,7 @@ public class JSDrone {
             mDeviceController.getFeatureJumpingSumo().setPilotingPCMDSpeed(speed);
         }
     }
-    
+
 
     /**
      * Set the turn angle of the Jumping Sumo
@@ -322,6 +321,7 @@ public class JSDrone {
 
     public void onDeleteFile(String mediaName) {
         mSDCardModule.deleteLastReceivedPic(mediaName);
+        Log.i(TAG, "count of pics: " + mSDCardModule.getPicCount());
     }
 
     private ARDiscoveryDevice createDiscoveryDevice(@NonNull ARDiscoveryDeviceService service, ARDISCOVERY_PRODUCT_ENUM productType) {
@@ -412,7 +412,6 @@ public class JSDrone {
         for (Listener listener : listenersCpy) {
             listener.onDownloadComplete(mediaName);
         }
-
     }
     //endregion notify listener block
 

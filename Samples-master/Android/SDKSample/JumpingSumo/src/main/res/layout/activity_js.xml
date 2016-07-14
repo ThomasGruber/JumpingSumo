@@ -124,20 +124,6 @@
         android:layout_toEndOf="@+id/textView"
         android:textColor="#ff0000" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/PicTaken"
-        android:textColor="#ffffff"
-        android:layout_below="@+id/takePictureBt"
-        android:layout_alignRight="@+id/takePictureBt"
-        android:layout_alignEnd="@+id/takePictureBt"
-        android:layout_toRightOf="@+id/rightBt"
-        android:layout_toEndOf="@+id/rightBt"
-        android:text="nix"
-        android:layout_above="@+id/forwardBt" />
-
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
