@@ -141,6 +141,13 @@ public class JSActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.VolumeBt).setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                mJSDrone.volumeOnOff();
+            }
+        });
+
+
         findViewById(R.id.turnaroundBt).setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 i++;
@@ -369,7 +376,7 @@ public class JSActivity extends AppCompatActivity {
             }
 
             Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-            //TODO: Pfadangabe nur an einer Stelle! (SDCardModule.java Zeile 36)
+            //TODO: Pfadangabe nur an einer Stelle! (SDCardModule.java Zeile 33)
             File f = new File(Environment.getExternalStorageDirectory() + "/JumpingSumo/" + mediaName);
             Log.i(TAG, "MediaScanIntent file: " + f.toString());
             Uri contentUri = Uri.fromFile(f);

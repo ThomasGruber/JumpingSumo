@@ -46,6 +46,8 @@ public class JSDrone {
 
     private static final int DEVICE_PORT = 21;
 
+    private byte Volume = 0;
+
     public interface Listener {
         /**
          * Called when the connection to the drone changes
@@ -266,6 +268,42 @@ public class JSDrone {
             mDeviceController.getFeatureJumpingSumo().sendAnimationsJump(ARCOMMANDS_JUMPINGSUMO_ANIMATIONS_JUMP_TYPE_ENUM.ARCOMMANDS_JUMPINGSUMO_ANIMATIONS_JUMP_TYPE_HIGH);
         }
     }
+    int i = 0;
+    public void volumeOnOff(){
+        if((mDeviceController != null) && (mState.equals(ARCONTROLLER_DEVICE_STATE_ENUM.ARCONTROLLER_DEVICE_STATE_RUNNING))){
+            if(Volume==0) {
+                Volume = 100;
+                switch (i%4) {
+                    case 0:
+                        mDeviceController.getFeatureJumpingSumo().sendAudioSettingsTheme(ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_ENUM.ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_MONSTER);
+                        Log.i(TAG, "set monster");
+                        break;
+                    case 1:
+                        mDeviceController.getFeatureJumpingSumo().sendAudioSettingsTheme(ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_ENUM.ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_ROBOT);
+                        Log.i(TAG, "set robot");
+                        break;
+                    case 2:
+                        mDeviceController.getFeatureJumpingSumo().sendAudioSettingsTheme(ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_ENUM.ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_INSECT);
+                        Log.i(TAG, "set insect");
+                        break;
+                    case 3:
+                        mDeviceController.getFeatureJumpingSumo().sendAudioSettingsTheme(ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_ENUM.ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_MAX);
+                        Log.i(TAG, "set max");
+                        break;
+                    default:
+                        mDeviceController.getFeatureJumpingSumo().sendAudioSettingsTheme(ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_ENUM.ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_DEFAULT);
+                        Log.i(TAG, "set default");
+                        break;
+                }
+                i++;
+            }
+            else
+                Volume = 0;
+            mDeviceController.getFeatureJumpingSumo().sendAudioSettingsMasterVolume(Volume);
+            Log.i(TAG, "volume to " + Volume);
+
+        }
+    }
 
     /**
      * Set the speed of the Jumping Sumo
@@ -452,6 +490,7 @@ public class JSDrone {
     private final ARDeviceControllerListener mDeviceControllerListener = new ARDeviceControllerListener() {
         @Override
         public void onStateChanged(ARDeviceController deviceController, ARCONTROLLER_DEVICE_STATE_ENUM newState, ARCONTROLLER_ERROR_ENUM error) {
+            Log.i(TAG, "newStateis " + newState);
             mState = newState;
             if (ARCONTROLLER_DEVICE_STATE_ENUM.ARCONTROLLER_DEVICE_STATE_RUNNING.equals(mState)) {
                 mDeviceController.getFeatureJumpingSumo().sendMediaStreamingVideoEnable((byte) 1);
@@ -469,12 +508,15 @@ public class JSDrone {
 
         @Override
         public void onExtensionStateChanged(ARDeviceController deviceController, ARCONTROLLER_DEVICE_STATE_ENUM newState, ARDISCOVERY_PRODUCT_ENUM product, String name, ARCONTROLLER_ERROR_ENUM error) {
+
         }
 
         @Override
         public void onCommandReceived(ARDeviceController deviceController, ARCONTROLLER_DICTIONARY_KEY_ENUM commandKey, ARControllerDictionary elementDictionary) {
             // if event received is the battery update
+            Log.i(TAG, "commandKeyis " + commandKey);
             if ((commandKey == ARCONTROLLER_DICTIONARY_KEY_ENUM.ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_BATTERYSTATECHANGED) && (elementDictionary != null)) {
+                Log.i(TAG, "commandKey battery");
                 ARControllerArgumentDictionary<Object> args = elementDictionary.get(ARControllerDictionary.ARCONTROLLER_DICTIONARY_SINGLE_KEY);
                 if (args != null) {
                     final int battery = (Integer) args.get(ARFeatureCommon.ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_BATTERYSTATECHANGED_PERCENT);
@@ -488,6 +530,7 @@ public class JSDrone {
             }
             // if event received is the picture notification
             else if ((commandKey == ARCONTROLLER_DICTIONARY_KEY_ENUM.ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDEVENT_PICTUREEVENTCHANGED) && (elementDictionary != null)){
+                Log.i(TAG, "commandKey media");
                 ARControllerArgumentDictionary<Object> args = elementDictionary.get(ARControllerDictionary.ARCONTROLLER_DICTIONARY_SINGLE_KEY);
                 if (args != null) {
                     final ARCOMMANDS_JUMPINGSUMO_MEDIARECORDEVENT_PICTUREEVENTCHANGED_ERROR_ENUM error =
@@ -502,6 +545,7 @@ public class JSDrone {
             }
             // if event received is the run id
             else if ((commandKey == ARCONTROLLER_DICTIONARY_KEY_ENUM.ARCONTROLLER_DICTIONARY_KEY_COMMON_RUNSTATE_RUNIDCHANGED) && (elementDictionary != null)){
+                Log.i(TAG, "commandKey runid");
                 ARControllerArgumentDictionary<Object> args = elementDictionary.get(ARControllerDictionary.ARCONTROLLER_DICTIONARY_SINGLE_KEY);
                 if (args != null) {
                     final String runID = (String) args.get(ARFeatureCommon.ARCONTROLLER_DICTIONARY_KEY_COMMON_RUNSTATE_RUNIDCHANGED_RUNID);
@@ -511,6 +555,14 @@ public class JSDrone {
                             mCurrentRunId = runID;
                         }
                     });
+                }
+            }
+            else if (commandKey == ARCONTROLLER_DICTIONARY_KEY_ENUM.ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_SPEEDCHANGED){
+                Log.i(TAG, "commandKey speedchange");
+                ARControllerArgumentDictionary<Object> args = elementDictionary.get(ARControllerDictionary.ARCONTROLLER_DICTIONARY_SINGLE_KEY);
+                if (args != null) {
+                    float speedchange = (float)args.get(ARCONTROLLER_DICTIONARY_KEY_ENUM.ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_SPEEDCHANGED);
+                    Log.i(TAG, "speedchange: " + speedchange);
                 }
             }
         }

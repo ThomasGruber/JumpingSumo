@@ -46,36 +46,21 @@ public class DeviceListActivity extends AppCompatActivity {
 
         // Assign adapter to ListView
         listView.setAdapter(mAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // launch the activity related to the type of discovery device service
+                Log.i(TAG, "click pos: " + position);
                 Intent intent = null;
-
-                ARDiscoveryDeviceService service = (ARDiscoveryDeviceService)mAdapter.getItem(position);
+                ARDiscoveryDeviceService service = (ARDiscoveryDeviceService) mAdapter.getItem(position);
                 ARDISCOVERY_PRODUCT_ENUM product = ARDiscoveryService.getProductFromProductID(service.getProductID());
+
                 switch (product) {
-                    case ARDISCOVERY_PRODUCT_ARDRONE:
-                    case ARDISCOVERY_PRODUCT_BEBOP_2:
-                        intent = new Intent(DeviceListActivity.this, BebopActivity.class);
-                        break;
-
-                    case ARDISCOVERY_PRODUCT_SKYCONTROLLER:
-                        intent = new Intent(DeviceListActivity.this, SkyControllerActivity.class);
-                        break;
-
                     case ARDISCOVERY_PRODUCT_JS:
                     case ARDISCOVERY_PRODUCT_JS_EVO_LIGHT:
                     case ARDISCOVERY_PRODUCT_JS_EVO_RACE:
                         intent = new Intent(DeviceListActivity.this, JSActivity.class);
-                        break;
-
-                    case ARDISCOVERY_PRODUCT_MINIDRONE:
-                    case ARDISCOVERY_PRODUCT_MINIDRONE_EVO_BRICK:
-                    case ARDISCOVERY_PRODUCT_MINIDRONE_EVO_LIGHT:
-                        intent = new Intent(DeviceListActivity.this, MiniDroneActivity.class);
                         break;
 
                     default:

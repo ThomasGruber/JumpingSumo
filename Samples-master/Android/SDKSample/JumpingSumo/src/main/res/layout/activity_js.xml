@@ -135,4 +135,13 @@
         android:layout_toStartOf="@+id/takePictureBt"
         android:layout_marginRight="31dp"
         android:layout_marginEnd="31dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Volume on/off"
+        android:id="@+id/VolumeBt"
+        android:width="150dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
