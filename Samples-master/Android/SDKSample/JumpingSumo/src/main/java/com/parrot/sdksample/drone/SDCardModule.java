@@ -28,6 +28,7 @@ public class SDCardModule {
 
     Context context;
     private static final String TAG = "SDCardModule";
+    int gl_picCount = -1;
 
     private static final String DRONE_MEDIA_FOLDER = "internal_000";
     private static final String MOBILE_MEDIA_FOLDER = "/JumpingSumo/";
@@ -212,12 +213,24 @@ public class SDCardModule {
     }
 
     public int getPicCount() {
-        int picCount = -1;
+        gl_picCount = -1;
         if (mThreadIsRunning) {
             ArrayList<ARDataTransferMedia> mediaList = getMediaList();
-            picCount = mediaList.size();
+            gl_picCount = mediaList.size() - 1;
         }
-        return picCount;
+        else {
+            mThreadIsRunning = true;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    mThreadIsRunning = false;
+                    mIsCancelled = false;
+                }
+            }).start();
+            ArrayList<ARDataTransferMedia> mediaList = getMediaList();
+            gl_picCount = mediaList.size() - 1;
+        }
+        return gl_picCount;
     }
 
 

@@ -64,6 +64,13 @@ public class JSDrone {
         void onBatteryChargeChanged(int batteryPercentage);
 
         /**
+         * Called when the pic Count changes
+         * Called in the main thread
+         * @param picCount the count of Pictures
+         */
+        void onPictureCount(int picCount);
+
+        /**
          * Called when a picture is taken
          * Called on a separate thread
          * @param error ERROR_OK if picture has been taken, otherwise describe the error
@@ -181,6 +188,7 @@ public class JSDrone {
             ARCONTROLLER_ERROR_ENUM error = mDeviceController.start();
             if (error == ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK) {
                 success = true;
+                notifyPictureCount(mSDCardModule.getPicCount());
             }
         }
         return success;
@@ -219,6 +227,7 @@ public class JSDrone {
             } else {
                 mDeviceController.getFeatureJumpingSumo().sendMediaRecordPictureV2();
             }
+            notifyPictureCount(mSDCardModule.getPicCount());
         }
     }
 
@@ -359,7 +368,9 @@ public class JSDrone {
 
     public void onDeleteFile(String mediaName) {
         mSDCardModule.deleteLastReceivedPic(mediaName);
-        Log.i(TAG, "count of pics: " + mSDCardModule.getPicCount());
+        if(mSDCardModule.getPicCount()==0)
+            notifyPictureCount(0);
+        //notifyPictureCount(mSDCardModule.getPicCount());
     }
 
     private ARDiscoveryDevice createDiscoveryDevice(@NonNull ARDiscoveryDeviceService service, ARDISCOVERY_PRODUCT_ENUM productType) {
@@ -406,6 +417,15 @@ public class JSDrone {
             listener.onBatteryChargeChanged(battery);
         }
     }
+
+    private void notifyPictureCount(int picCount) {
+        List<Listener> listenersCpy = new ArrayList<>(mListeners);
+        for (Listener listener : listenersCpy) {
+            listener.onPictureCount(picCount);
+        }
+    }
+
+
 
     private void notifyPictureTaken(ARCOMMANDS_JUMPINGSUMO_MEDIARECORDEVENT_PICTUREEVENTCHANGED_ERROR_ENUM error) {
         List<Listener> listenersCpy = new ArrayList<>(mListeners);

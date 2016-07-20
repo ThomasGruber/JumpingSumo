@@ -1,6 +1,7 @@
 package com.parrot.sdksample.activity;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -75,6 +76,38 @@ public class DeviceListActivity extends AppCompatActivity {
         });
 
         mDroneDiscoverer = new DroneDiscoverer(this);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        // Checks the orientation of the screen
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            if(mAdapter.isEmpty() == false) {
+                Intent intent = null;
+                ARDiscoveryDeviceService service = (ARDiscoveryDeviceService) mAdapter.getItem(0);
+                ARDISCOVERY_PRODUCT_ENUM product = ARDiscoveryService.getProductFromProductID(service.getProductID());
+                switch (product) {
+                    case ARDISCOVERY_PRODUCT_JS:
+                    case ARDISCOVERY_PRODUCT_JS_EVO_LIGHT:
+                    case ARDISCOVERY_PRODUCT_JS_EVO_RACE:
+                        intent = new Intent(DeviceListActivity.this, JSActivity.class);
+                        break;
+
+                    default:
+                        Log.e(TAG, "The type " + product + " is not supported by this sample");
+                }
+
+                if (intent != null) {
+                    intent.putExtra(EXTRA_DEVICE_SERVICE, service);
+                    startActivity(intent);
+                }
+            }
+
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            Log.i(TAG, "flip to portrait");
+        }
     }
 
     @Override

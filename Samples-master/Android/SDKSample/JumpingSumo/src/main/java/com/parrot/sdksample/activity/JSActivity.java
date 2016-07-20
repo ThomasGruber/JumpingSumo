@@ -4,7 +4,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Context;
-import android.media.MediaScannerConnection;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parrot.arsdk.arcommands.ARCOMMANDS_JUMPINGSUMO_MEDIARECORDEVENT_PICTUREEVENTCHANGED_ERROR_ENUM;
-import com.parrot.arsdk.arcommands.ARCOMMANDS_JUMPINGSUMO_MEDIARECORDEVENT_PICTUREEVENTCHANGED_EVENT_ENUM;
 import com.parrot.arsdk.arcontroller.ARCONTROLLER_DEVICE_STATE_ENUM;
 import com.parrot.arsdk.arcontroller.ARControllerCodec;
 import com.parrot.arsdk.arcontroller.ARFrame;
@@ -27,7 +26,6 @@ import com.parrot.sdksample.drone.JSDrone;
 import com.parrot.sdksample.view.JSVideoView;
 
 import java.io.File;
-import java.util.logging.Handler;
 
 public class JSActivity extends AppCompatActivity {
     private static final String TAG = "JSActivity";
@@ -39,6 +37,7 @@ public class JSActivity extends AppCompatActivity {
     private JSVideoView mVideoView;
 
     private TextView mBatteryLabel;
+    private TextView mPicCount;
 
     private int mNbMaxDownload;
     private int mCurrentDownloadIndex;
@@ -51,6 +50,7 @@ public class JSActivity extends AppCompatActivity {
         setContentView(R.layout.activity_js);
 
         initIHM();
+        mPicCount = (TextView) findViewById(R.id.PicCount);
 
         Intent intent = getIntent();
         ARDiscoveryDeviceService service = intent.getParcelableExtra(DeviceListActivity.EXTRA_DEVICE_SERVICE);
@@ -74,6 +74,27 @@ public class JSActivity extends AppCompatActivity {
             // if the connection to the Jumping fails, finish the activity
             if (!mJSDrone.connect()) {
                 finish();
+            }
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        // Checks the orientation of the screen
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Log.i(TAG, "landsacape");
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            Log.i(TAG, "flip to portrait");
+            //TODO
+            if (mJSDrone != null)
+            {
+                Toast.makeText(getBaseContext(), "Disconnecting ...", Toast.LENGTH_SHORT).show();
+
+                if (!mJSDrone.disconnect()) {
+                    finish();
+                }
             }
         }
     }
@@ -324,6 +345,9 @@ public class JSActivity extends AppCompatActivity {
         public void onPictureTaken(ARCOMMANDS_JUMPINGSUMO_MEDIARECORDEVENT_PICTUREEVENTCHANGED_ERROR_ENUM error) {
         }
 
+        public void onPictureCount(int picCount) {
+        mPicCount.setText(String.format("%d", picCount));
+        }
 
         @Override
         public void configureDecoder(ARControllerCodec codec) {
@@ -376,7 +400,7 @@ public class JSActivity extends AppCompatActivity {
             }
 
             Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-            //TODO: Pfadangabe nur an einer Stelle! (SDCardModule.java Zeile 33)
+            //TODO: Pfadangabe nur an einer Stelle! (SDCardModule.java Zeile 34)
             File f = new File(Environment.getExternalStorageDirectory() + "/JumpingSumo/" + mediaName);
             Log.i(TAG, "MediaScanIntent file: " + f.toString());
             Uri contentUri = Uri.fromFile(f);

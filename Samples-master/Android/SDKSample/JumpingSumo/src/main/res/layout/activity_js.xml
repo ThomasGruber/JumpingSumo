@@ -144,4 +144,28 @@
         android:width="150dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="XX"
+        android:id="@+id/PicCount"
+        android:textColor="#1fa90d"
+        android:layout_below="@+id/takePictureBt"
+        android:layout_alignRight="@+id/takePictureBt"
+        android:layout_alignEnd="@+id/takePictureBt"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="PictureCount: "
+        android:id="@+id/PicCountTxt"
+        android:textColor="#1fa90d"
+        android:layout_below="@+id/takePictureBt"
+        android:layout_alignLeft="@+id/takePictureBt"
+        android:layout_alignStart="@+id/takePictureBt"
+        android:textStyle="bold" />
 </RelativeLayout>
