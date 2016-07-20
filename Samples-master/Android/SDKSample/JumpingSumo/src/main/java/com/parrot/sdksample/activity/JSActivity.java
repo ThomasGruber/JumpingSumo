@@ -41,6 +41,7 @@ public class JSActivity extends AppCompatActivity {
 
     private int mNbMaxDownload;
     private int mCurrentDownloadIndex;
+    private int GpicCount;
 
     Context context;
 
@@ -120,7 +121,7 @@ public class JSActivity extends AppCompatActivity {
         findViewById(R.id.takePictureBt).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 mJSDrone.takePicture();
-                Toast.makeText(getBaseContext(),"Picture was taken",Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), "Picture was taken", Toast.LENGTH_LONG).show();
                 Log.i(TAG, "take Picture");
             }
         });
@@ -346,7 +347,17 @@ public class JSActivity extends AppCompatActivity {
         }
 
         public void onPictureCount(int picCount) {
-        mPicCount.setText(String.format("%d", picCount));
+            //mPicCount.setText(String.format("%d", picCount));
+            GpicCount = picCount;
+            runThread();
+        }
+
+        private void runThread(){
+            runOnUiThread(new Thread(new Runnable() {
+                public void run() {
+                        mPicCount.setText(String.format("%d", GpicCount));
+                    }
+            }));
         }
 
         @Override

@@ -216,7 +216,7 @@ public class SDCardModule {
         gl_picCount = -1;
         if (mThreadIsRunning) {
             ArrayList<ARDataTransferMedia> mediaList = getMediaList();
-            gl_picCount = mediaList.size() - 1;
+            gl_picCount = mediaList.size();
         }
         else {
             mThreadIsRunning = true;
@@ -228,7 +228,7 @@ public class SDCardModule {
                 }
             }).start();
             ArrayList<ARDataTransferMedia> mediaList = getMediaList();
-            gl_picCount = mediaList.size() - 1;
+            gl_picCount = mediaList.size();
         }
         return gl_picCount;
     }

@@ -26,7 +26,6 @@ import com.parrot.arsdk.arcontroller.ARDeviceControllerStreamListener;
 import com.parrot.arsdk.arcontroller.ARFeatureCommon;
 import com.parrot.arsdk.arcontroller.ARFeatureJumpingSumo;
 import com.parrot.arsdk.arcontroller.ARFrame;
-import com.parrot.arsdk.ardatatransfer.ARDataTransferMedia;
 import com.parrot.arsdk.ardiscovery.ARDISCOVERY_PRODUCT_ENUM;
 import com.parrot.arsdk.ardiscovery.ARDISCOVERY_PRODUCT_FAMILY_ENUM;
 import com.parrot.arsdk.ardiscovery.ARDiscoveryDevice;
@@ -368,9 +367,7 @@ public class JSDrone {
 
     public void onDeleteFile(String mediaName) {
         mSDCardModule.deleteLastReceivedPic(mediaName);
-        if(mSDCardModule.getPicCount()==0)
-            notifyPictureCount(0);
-        //notifyPictureCount(mSDCardModule.getPicCount());
+        notifyPictureCount(mSDCardModule.getPicCount());
     }
 
     private ARDiscoveryDevice createDiscoveryDevice(@NonNull ARDiscoveryDeviceService service, ARDISCOVERY_PRODUCT_ENUM productType) {
@@ -534,7 +531,7 @@ public class JSDrone {
         @Override
         public void onCommandReceived(ARDeviceController deviceController, ARCONTROLLER_DICTIONARY_KEY_ENUM commandKey, ARControllerDictionary elementDictionary) {
             // if event received is the battery update
-            Log.i(TAG, "commandKeyis " + commandKey);
+            Log.i(TAG, "commandKey is " + commandKey.name());
             if ((commandKey == ARCONTROLLER_DICTIONARY_KEY_ENUM.ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_BATTERYSTATECHANGED) && (elementDictionary != null)) {
                 Log.i(TAG, "commandKey battery");
                 ARControllerArgumentDictionary<Object> args = elementDictionary.get(ARControllerDictionary.ARCONTROLLER_DICTIONARY_SINGLE_KEY);
