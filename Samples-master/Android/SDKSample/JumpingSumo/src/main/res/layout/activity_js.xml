@@ -25,18 +25,18 @@
         android:layout_height="wrap_content"
         android:text="left"
         android:id="@+id/leftBt"
-        android:layout_centerVertical="true"
+        android:layout_below="@+id/forwardBt"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="110dp"
         android:layout_height="wrap_content"
         android:text="forward"
         android:id="@+id/forwardBt"
-        android:layout_above="@+id/leftBt"
+        android:layout_alignTop="@+id/PicCountTxt"
         android:layout_toRightOf="@+id/leftBt"
-        android:layout_toEndOf="@+id/leftBt"/>
+        android:layout_toEndOf="@+id/leftBt" />
 
     <Button
         android:layout_width="110dp"
@@ -52,9 +52,9 @@
         android:layout_height="wrap_content"
         android:text="right"
         android:id="@+id/rightBt"
-        android:layout_alignBaseline="@+id/leftBt"
-        android:layout_toRightOf="@+id/forwardBt"
-        android:layout_toEndOf="@+id/forwardBt"/>
+        android:layout_alignTop="@+id/Left180Bt"
+        android:layout_toRightOf="@+id/backwardBt"
+        android:layout_toEndOf="@+id/backwardBt" />
 
     <Button
         android:layout_width="wrap_content"
@@ -71,18 +71,17 @@
         android:text="Jump_Long"
         android:id="@+id/jump_longBt"
         android:width="150dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_above="@+id/PicCountTxt"
+        android:layout_alignLeft="@+id/forwardBt"
+        android:layout_alignStart="@+id/forwardBt" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Jump_high"
         android:id="@+id/jump_highBt"
-        android:layout_above="@+id/forwardBt"
-        android:layout_alignLeft="@+id/forwardBt"
-        android:layout_alignStart="@+id/forwardBt" />
+        android:layout_above="@+id/PicCountTxt"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
@@ -98,9 +97,9 @@
         android:layout_height="wrap_content"
         android:text="turn around"
         android:id="@+id/turnaroundBt"
-        android:layout_below="@+id/jump_highBt"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_below="@+id/Right90Bt"
+        android:layout_alignRight="@+id/PicCount"
+        android:layout_alignEnd="@+id/PicCount" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -108,10 +107,10 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Battery: "
         android:id="@+id/textView"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textColor="#ff0000" />
+        android:textColor="#ff0000"
+        android:layout_below="@+id/PicCountTxt"
+        android:layout_toRightOf="@+id/Right90Bt"
+        android:layout_toEndOf="@+id/Right90Bt" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -119,10 +118,10 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="XXX%"
         android:id="@+id/batteryLabel"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/textView"
-        android:layout_toEndOf="@+id/textView"
-        android:textColor="#ff0000" />
+        android:textColor="#ff0000"
+        android:layout_alignTop="@+id/textView"
+        android:layout_alignRight="@+id/PicCount"
+        android:layout_alignEnd="@+id/PicCount" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -131,19 +130,8 @@
         android:text="Record"
         android:id="@+id/recordBt"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/takePictureBt"
-        android:layout_toStartOf="@+id/takePictureBt"
-        android:layout_marginRight="31dp"
-        android:layout_marginEnd="31dp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Volume on/off"
-        android:id="@+id/VolumeBt"
-        android:width="150dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignLeft="@+id/Right90Bt"
+        android:layout_alignStart="@+id/Right90Bt" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -168,4 +156,102 @@
         android:layout_alignLeft="@+id/takePictureBt"
         android:layout_alignStart="@+id/takePictureBt"
         android:textStyle="bold" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="90 left"
+        android:id="@+id/Left90Bt"
+        android:layout_above="@+id/Left180Bt"
+        android:layout_toRightOf="@+id/rightBt"
+        android:layout_toEndOf="@+id/rightBt" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="180 left"
+        android:id="@+id/Left180Bt"
+        android:layout_above="@+id/backwardBt"
+        android:layout_alignLeft="@+id/Left90Bt"
+        android:layout_alignStart="@+id/Left90Bt" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="90 right"
+        android:id="@+id/Right90Bt"
+        android:layout_alignTop="@+id/Left90Bt"
+        android:layout_toStartOf="@+id/PicCountTxt"
+        android:layout_toLeftOf="@+id/PicCountTxt" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="180 right"
+        android:id="@+id/Right180Bt"
+        android:layout_above="@+id/PanoramaBt"
+        android:layout_alignLeft="@+id/Right90Bt"
+        android:layout_alignStart="@+id/Right90Bt" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/SpeedEt"
+        android:digits="0123456789"
+        android:text="100"
+        android:maxLength="3"
+        android:textStyle="bold"
+        android:textColor="#1fa90d"
+        android:inputType="number"
+        android:layout_alignTop="@+id/leftBt"
+        android:layout_toRightOf="@+id/batteryLabel"
+        android:layout_toEndOf="@+id/batteryLabel" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Panorama"
+        android:id="@+id/PanoramaBt"
+        android:layout_alignTop="@+id/backwardBt"
+        android:layout_alignRight="@+id/recordBt"
+        android:layout_alignEnd="@+id/recordBt" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" Volume ON"
+        android:id="@+id/VolumeSw"
+        android:checked="true"
+        android:background="#cccccc"
+        android:layout_below="@+id/SoundSm"
+        android:layout_alignRight="@+id/SoundSm"
+        android:layout_alignEnd="@+id/SoundSm"
+        android:layout_alignLeft="@+id/SoundSm"
+        android:layout_alignStart="@+id/SoundSm" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/SoundSm"
+        android:spinnerMode="dropdown"
+        android:layout_alignRight="@+id/PanoramaBt"
+        android:layout_alignEnd="@+id/PanoramaBt"
+        android:background="#cccccc"
+        android:layout_below="@+id/PanoramaBt"
+        android:layout_above="@+id/downloadBt"
+        android:layout_toRightOf="@+id/rightBt"
+        android:layout_toEndOf="@+id/rightBt" />
+
+    <RelativeLayout
+        android:id="@+id/joystick"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:background="#cccccc"
+        android:layout_alignParentBottom="true"
+        android:layout_alignTop="@+id/SoundSm"
+        android:layout_alignLeft="@+id/backwardBt"
+        android:layout_alignStart="@+id/backwardBt"
+        android:layout_alignRight="@+id/jump_longBt"
+        android:layout_alignEnd="@+id/jump_longBt" />
+
 </RelativeLayout>

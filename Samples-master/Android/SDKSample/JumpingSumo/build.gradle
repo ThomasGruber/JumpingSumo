@@ -19,6 +19,7 @@ android {
     }
 }
 
+/*
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
@@ -30,4 +31,12 @@ dependencies {
         compile 'com.parrot:arsdk:3.9.1'
     }
 
+}
+*/
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:22.1.1'
+    //compile 'com.android.support:design:22.1.1'
+    compile 'com.parrot:arsdk:3.9.1'
 }

@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">JumpingSumo</string>
+    <string-array name="Sounds">
+        <item>default</item>
+        <item>Monster</item>
+        <item>Robot</item>
+        <item>Insect</item>
+        <item>max</item>
+
+    </string-array>
 </resources>

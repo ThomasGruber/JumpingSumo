@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.TextView;
 
 import com.parrot.arsdk.arcommands.ARCOMMANDS_JUMPINGSUMO_ANIMATIONS_JUMP_TYPE_ENUM;
 import com.parrot.arsdk.arcommands.ARCOMMANDS_JUMPINGSUMO_ANIMATIONS_SIMPLEANIMATION_ID_ENUM;
@@ -44,8 +43,6 @@ public class JSDrone {
     private static final String TAG = "JSDrone";
 
     private static final int DEVICE_PORT = 21;
-
-    private byte Volume = 0;
 
     public interface Listener {
         /**
@@ -219,6 +216,7 @@ public class JSDrone {
     }
 
     public void takePicture() {
+        //mDeviceController.getFeatureCommon().sendSettingsAllSettings();
         if ((mDeviceController != null) && (mState.equals(ARCONTROLLER_DEVICE_STATE_ENUM.ARCONTROLLER_DEVICE_STATE_RUNNING))) {
             // JumpingSumo (not evo) are still using old deprecated command
             if (ARDISCOVERY_PRODUCT_ENUM.ARDISCOVERY_PRODUCT_JS.equals(mProductType)) {
@@ -227,6 +225,14 @@ public class JSDrone {
                 mDeviceController.getFeatureJumpingSumo().sendMediaRecordPictureV2();
             }
             notifyPictureCount(mSDCardModule.getPicCount());
+        }
+    }
+
+    public void turndegree(float degree){
+        if((mDeviceController != null) && (mState.equals(ARCONTROLLER_DEVICE_STATE_ENUM.ARCONTROLLER_DEVICE_STATE_RUNNING))){
+
+            Log.i(TAG, "JS Degree: " + degree);
+            mDeviceController.getFeatureJumpingSumo().sendPilotingAddCapOffset(degree);
         }
     }
 
@@ -276,40 +282,43 @@ public class JSDrone {
             mDeviceController.getFeatureJumpingSumo().sendAnimationsJump(ARCOMMANDS_JUMPINGSUMO_ANIMATIONS_JUMP_TYPE_ENUM.ARCOMMANDS_JUMPINGSUMO_ANIMATIONS_JUMP_TYPE_HIGH);
         }
     }
-    int i = 0;
-    public void volumeOnOff(){
-        if((mDeviceController != null) && (mState.equals(ARCONTROLLER_DEVICE_STATE_ENUM.ARCONTROLLER_DEVICE_STATE_RUNNING))){
-            if(Volume==0) {
-                Volume = 100;
-                switch (i%4) {
-                    case 0:
-                        mDeviceController.getFeatureJumpingSumo().sendAudioSettingsTheme(ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_ENUM.ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_MONSTER);
-                        Log.i(TAG, "set monster");
-                        break;
-                    case 1:
-                        mDeviceController.getFeatureJumpingSumo().sendAudioSettingsTheme(ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_ENUM.ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_ROBOT);
-                        Log.i(TAG, "set robot");
-                        break;
-                    case 2:
-                        mDeviceController.getFeatureJumpingSumo().sendAudioSettingsTheme(ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_ENUM.ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_INSECT);
-                        Log.i(TAG, "set insect");
-                        break;
-                    case 3:
-                        mDeviceController.getFeatureJumpingSumo().sendAudioSettingsTheme(ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_ENUM.ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_MAX);
-                        Log.i(TAG, "set max");
-                        break;
-                    default:
-                        mDeviceController.getFeatureJumpingSumo().sendAudioSettingsTheme(ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_ENUM.ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_DEFAULT);
-                        Log.i(TAG, "set default");
-                        break;
-                }
-                i++;
-            }
-            else
-                Volume = 0;
-            mDeviceController.getFeatureJumpingSumo().sendAudioSettingsMasterVolume(Volume);
-            Log.i(TAG, "volume to " + Volume);
 
+    public void volumeOnOff(byte volume){
+        if((mDeviceController != null) && (mState.equals(ARCONTROLLER_DEVICE_STATE_ENUM.ARCONTROLLER_DEVICE_STATE_RUNNING))){
+            mDeviceController.getFeatureJumpingSumo().sendAudioSettingsMasterVolume(volume);
+            Log.i(TAG, "volume to " + volume);
+
+        }
+    }
+
+    public void soundSwitch(int set){
+        if((mDeviceController != null) && (mState.equals(ARCONTROLLER_DEVICE_STATE_ENUM.ARCONTROLLER_DEVICE_STATE_RUNNING))){
+            switch (set) {
+                case 0:
+                    mDeviceController.getFeatureJumpingSumo().sendAudioSettingsTheme(ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_ENUM.ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_DEFAULT);
+                    Log.i(TAG, "set default");
+                    break;
+                case 1:
+                    mDeviceController.getFeatureJumpingSumo().sendAudioSettingsTheme(ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_ENUM.ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_MONSTER);
+                    Log.i(TAG, "set monster");
+                    break;
+                case 2:
+                    mDeviceController.getFeatureJumpingSumo().sendAudioSettingsTheme(ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_ENUM.ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_ROBOT);
+                    Log.i(TAG, "set robot");
+                    break;
+                case 3:
+                    mDeviceController.getFeatureJumpingSumo().sendAudioSettingsTheme(ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_ENUM.ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_INSECT);
+                    Log.i(TAG, "set insect");
+                    break;
+                case 4:
+                    mDeviceController.getFeatureJumpingSumo().sendAudioSettingsTheme(ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_ENUM.ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_MAX);
+                    Log.i(TAG, "set max");
+                    break;
+                default:
+                    mDeviceController.getFeatureJumpingSumo().sendAudioSettingsTheme(ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_ENUM.ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_DEFAULT);
+                    Log.i(TAG, "set default");
+                    break;
+            }
         }
     }
 
@@ -356,8 +365,8 @@ public class JSDrone {
         if ((runId != null) && !runId.isEmpty()) {
             mSDCardModule.getFlightMedias(runId);
         } else {
-            Log.e(TAG, "RunID not available, fallback to the day's medias");
-            mSDCardModule.getTodaysFlightMedias();
+            Log.e(TAG, "RunID not available, fallback to the all day's medias");
+            mSDCardModule.getallFlightMedias();
         }
     }
 
@@ -531,7 +540,33 @@ public class JSDrone {
         @Override
         public void onCommandReceived(ARDeviceController deviceController, ARCONTROLLER_DICTIONARY_KEY_ENUM commandKey, ARControllerDictionary elementDictionary) {
             // if event received is the battery update
-            Log.i(TAG, "commandKey is " + commandKey.name());
+
+            if (elementDictionary != null) {
+                if (commandKey == ARCONTROLLER_DICTIONARY_KEY_ENUM.ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_SPEEDCHANGED){
+                    ARControllerArgumentDictionary<Object> args = elementDictionary.get(ARControllerDictionary.ARCONTROLLER_DICTIONARY_SINGLE_KEY);
+                    if (args != null) {
+                        double speed = (double)args.get(ARFeatureJumpingSumo.ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_SPEEDCHANGED_SPEED);
+                        double realspeed = (double)args.get(ARFeatureJumpingSumo.ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_SPEEDCHANGED_REALSPEED);
+                        Log.i(TAG, "JS move - speed:" + speed + " realspeed: " + realspeed);
+                    }
+                }
+                if (commandKey == ARCONTROLLER_DICTIONARY_KEY_ENUM.ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_SPEEDCHANGED){
+                    ARControllerArgumentDictionary<Object> args = elementDictionary.get(ARControllerDictionary.ARCONTROLLER_DICTIONARY_SINGLE_KEY);
+                    if (args != null) {
+                        double post = (double)args.get(ARFeatureJumpingSumo.ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_POSTURECHANGED_STATE);
+                        Log.i(TAG, "JS move - post: " + post);
+                    }
+                }
+
+            }
+
+            if ((commandKey != ARCONTROLLER_DICTIONARY_KEY_ENUM.ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_WIFISIGNALCHANGED) && (elementDictionary != null)){
+                Log.i(TAG, "commandKey is " + commandKey.name());
+                //TODO find the speed of the jumping sumo and the direction
+                //ARControllerArgumentDictionary<Object> arg = elementDictionary.get(ARControllerDictionary.ARCONTROLLER_DICTIONARY_SINGLE_KEY);
+                //final int speed = (Integer) arg.get(ARFeatureJumpingSumo.ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_SPEEDCHANGED_REALSPEED);
+                //Log.i(TAG, "commandKey is speed with: " + speed);
+            }
             if ((commandKey == ARCONTROLLER_DICTIONARY_KEY_ENUM.ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_BATTERYSTATECHANGED) && (elementDictionary != null)) {
                 Log.i(TAG, "commandKey battery");
                 ARControllerArgumentDictionary<Object> args = elementDictionary.get(ARControllerDictionary.ARCONTROLLER_DICTIONARY_SINGLE_KEY);
@@ -552,6 +587,7 @@ public class JSDrone {
                 if (args != null) {
                     final ARCOMMANDS_JUMPINGSUMO_MEDIARECORDEVENT_PICTUREEVENTCHANGED_ERROR_ENUM error =
                             ARCOMMANDS_JUMPINGSUMO_MEDIARECORDEVENT_PICTUREEVENTCHANGED_ERROR_ENUM.getFromValue((Integer) args.get(ARFeatureJumpingSumo.ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDEVENT_PICTUREEVENTCHANGED_ERROR));
+                    Log.i(TAG,"JS Feature Error: " + error);
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {

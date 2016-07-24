@@ -8,11 +8,16 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +29,8 @@ import com.parrot.arsdk.ardiscovery.ARDiscoveryDeviceService;
 import com.parrot.sdksample.R;
 import com.parrot.sdksample.drone.JSDrone;
 import com.parrot.sdksample.view.JSVideoView;
+import com.support.InputFilterMinMax;
+import com.support.SelectListener;
 
 import java.io.File;
 
@@ -39,6 +46,7 @@ public class JSActivity extends AppCompatActivity {
     private TextView mBatteryLabel;
     private TextView mPicCount;
 
+
     private int mNbMaxDownload;
     private int mCurrentDownloadIndex;
     private int GpicCount;
@@ -50,6 +58,13 @@ public class JSActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_js);
 
+
+        Spinner spinner = (Spinner) findViewById(R.id.SoundSm);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.Sounds, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
         initIHM();
         mPicCount = (TextView) findViewById(R.id.PicCount);
 
@@ -57,6 +72,10 @@ public class JSActivity extends AppCompatActivity {
         ARDiscoveryDeviceService service = intent.getParcelableExtra(DeviceListActivity.EXTRA_DEVICE_SERVICE);
         mJSDrone = new JSDrone(this, service);
         mJSDrone.addListener(mJSListener);
+
+        SelectListener selectL = new SelectListener();
+        selectL.setSelectListener(mJSDrone);
+        spinner.setOnItemSelectedListener(selectL);
 
     }
 
@@ -76,6 +95,9 @@ public class JSActivity extends AppCompatActivity {
             if (!mJSDrone.connect()) {
                 finish();
             }
+            ((TextView) findViewById(R.id.VolumeSw)).setText("Volume ON");
+            mJSDrone.volumeOnOff((byte) 100);
+
         }
     }
 
@@ -125,8 +147,74 @@ public class JSActivity extends AppCompatActivity {
                 Log.i(TAG, "take Picture");
             }
         });
-        findViewById(R.id.recordBt).setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
+
+        findViewById(R.id.Left90Bt).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                mJSDrone.turndegree(-(float) Math.PI / 2);
+                mJSDrone.setFlag((byte) 1);
+                mJSDrone.setFlag((byte) 0);
+                Log.i(TAG, "turn left 90");
+            }
+        });
+
+        findViewById(R.id.Left180Bt).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                mJSDrone.turndegree(-(float) Math.PI);
+                mJSDrone.setFlag((byte) 1);
+                mJSDrone.setFlag((byte) 0);
+                Log.i(TAG, "turn left 90");
+            }
+        });
+
+        findViewById(R.id.Right90Bt).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                mJSDrone.turndegree((float)Math.PI/2);
+                mJSDrone.setFlag((byte) 1);
+                mJSDrone.setFlag((byte) 0);
+                Log.i(TAG, "turn left 90");
+            }
+        });
+
+        findViewById(R.id.Right180Bt).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                mJSDrone.turndegree((float) Math.PI);
+                mJSDrone.setFlag((byte) 1);
+                mJSDrone.setFlag((byte) 0);
+                Log.i(TAG, "turn left 90");
+            }
+        });
+
+        findViewById(R.id.PanoramaBt).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                ((Button)findViewById(R.id.PanoramaBt)).setText("working");
+                Toast.makeText(getBaseContext(),"Recording Pics for Panorama",Toast.LENGTH_LONG).show();
+                Handler handler = new Handler();
+                for (int i = 1; i < 13; i++) {
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.i(TAG, "take a Panorama...");
+                            mJSDrone.takePicture();
+
+                            mJSDrone.turndegree((float) Math.PI / 6);
+                            mJSDrone.setFlag((byte) 1);
+                            mJSDrone.setFlag((byte) 0);
+
+                        }
+                    }, 1500 * i);
+                }
+                Toast.makeText(getBaseContext(),"Done Pics for Panorama",Toast.LENGTH_LONG).show();
+                ((Button)findViewById(R.id.PanoramaBt)).setText("Panorama");
+            }
+        });
+
+        findViewById(R.id.recordBt).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 i++;
                 Runnable r = new Runnable() {
                     @Override
@@ -134,16 +222,16 @@ public class JSActivity extends AppCompatActivity {
                         i = 0;
                     }
                 };
-                if(i == 1){
+                if (i == 1) {
                     mJSDrone.record();
-                    Toast.makeText(getBaseContext(),"Recording a Video",Toast.LENGTH_LONG).show();
-                    ((Button)findViewById(R.id.recordBt)).setText("STOP");
+                    Toast.makeText(getBaseContext(), "Recording a Video", Toast.LENGTH_LONG).show();
+                    ((Button) findViewById(R.id.recordBt)).setText("STOP");
 
-                }else if(i == 2){
+                } else if (i == 2) {
                     i = 0;
                     mJSDrone.stop_recording();
-                    Toast.makeText(getBaseContext(),"Video stopped",Toast.LENGTH_LONG).show();
-                    ((TextView)findViewById(R.id.recordBt)).setText("Record");
+                    Toast.makeText(getBaseContext(), "Video stopped", Toast.LENGTH_LONG).show();
+                    ((TextView) findViewById(R.id.recordBt)).setText("Record");
                 }
 
 
@@ -151,27 +239,38 @@ public class JSActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.jump_longBt).setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
+        findViewById(R.id.jump_longBt).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 mJSDrone.jump_long();
             }
         });
 
-        findViewById(R.id.jump_highBt).setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
+        findViewById(R.id.jump_highBt).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 mJSDrone.jump_high();
             }
         });
 
-        findViewById(R.id.VolumeBt).setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                mJSDrone.volumeOnOff();
+        findViewById(R.id.VolumeSw).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String txt = (String) ((TextView) findViewById(R.id.VolumeSw)).getText();
+                Boolean SoundOn = txt.compareTo(" Volume ON") == 0;
+                if (SoundOn) {
+                    ((TextView) findViewById(R.id.VolumeSw)).setText(" Volume OFF");
+                    mJSDrone.volumeOnOff((byte) 0);
+                } else {
+                    ((TextView) findViewById(R.id.VolumeSw)).setText(" Volume ON");
+                    mJSDrone.volumeOnOff((byte) 100);
+                }
             }
         });
 
 
-        findViewById(R.id.turnaroundBt).setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
+
+
+
+        findViewById(R.id.turnaroundBt).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 i++;
                 Runnable r = new Runnable() {
                     @Override
@@ -179,7 +278,7 @@ public class JSActivity extends AppCompatActivity {
                         i = 0;
                     }
                 };
-                if(i == 1){
+                if (i == 1) {
                     mJSDrone.turnaround();
                 }else if(i == 2){
                     i = 0;
@@ -216,10 +315,14 @@ public class JSActivity extends AppCompatActivity {
         findViewById(R.id.forwardBt).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+
+                EditText et = (EditText) findViewById(R.id.SpeedEt);
+                et.setFilters(new InputFilter[]{new InputFilterMinMax("1", "100")});
+                byte speed = (byte) Integer.parseInt(et.getText().toString());
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         v.setPressed(true);
-                        mJSDrone.setSpeed((byte) 100);
+                        mJSDrone.setSpeed((byte) speed);
                         mJSDrone.setFlag((byte) 1);
                         break;
 
@@ -241,10 +344,11 @@ public class JSActivity extends AppCompatActivity {
         findViewById(R.id.backwardBt).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                byte speed = (byte) Integer.parseInt(((TextView) findViewById(R.id.SpeedEt)).getText().toString());
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         v.setPressed(true);
-                        mJSDrone.setSpeed((byte) -100);
+                        mJSDrone.setSpeed((byte) -speed);
                         mJSDrone.setFlag((byte) 1);
                         break;
 

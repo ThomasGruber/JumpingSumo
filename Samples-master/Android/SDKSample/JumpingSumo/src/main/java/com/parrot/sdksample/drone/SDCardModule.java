@@ -179,6 +179,25 @@ public class SDCardModule {
         }
     }
 
+    public void getallFlightMedias() {
+        if (!mThreadIsRunning) {
+            mThreadIsRunning = true;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    ArrayList<ARDataTransferMedia> mediaList = getMediaList();
+                    mNbMediasToDownload = mediaList.size();
+                    notifyMatchingMediasFound(mNbMediasToDownload);
+                    if ((mediaList != null) && (mNbMediasToDownload != 0) && !mIsCancelled) {
+                        downloadMedias(mediaList);
+                    }
+                    mThreadIsRunning = false;
+                    mIsCancelled = false;
+                }
+            }).start();
+        }
+    }
+
     public void cancelGetFlightMedias() {
         if (mThreadIsRunning) {
             mIsCancelled = true;
