@@ -29,7 +29,9 @@ import com.parrot.arsdk.ardiscovery.ARDiscoveryDeviceService;
 import com.parrot.sdksample.R;
 import com.parrot.sdksample.drone.JSDrone;
 import com.parrot.sdksample.view.JSVideoView;
+import com.support.DataSingelton;
 import com.support.InputFilterMinMax;
+import com.support.JoystickView;
 import com.support.SelectListener;
 
 import java.io.File;
@@ -45,11 +47,14 @@ public class JSActivity extends AppCompatActivity {
 
     private TextView mBatteryLabel;
     private TextView mPicCount;
+    private JoystickView joystickView;
 
 
     private int mNbMaxDownload;
     private int mCurrentDownloadIndex;
     private int GpicCount;
+    private int GbatteryPercentage;
+
 
     Context context;
 
@@ -57,7 +62,6 @@ public class JSActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_js);
-
 
         Spinner spinner = (Spinner) findViewById(R.id.SoundSm);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -77,6 +81,17 @@ public class JSActivity extends AppCompatActivity {
         selectL.setSelectListener(mJSDrone);
         spinner.setOnItemSelectedListener(selectL);
 
+        joystickView=(JoystickView)findViewById(R.id.joystickviewJ);
+        joystickView.setJoystickChangeListener(new JoystickView.JoystickChangeListener() {
+            @Override
+            public void onJoystickChanged(int power, int degree) {
+                Log.i(TAG, "power:".concat(String.valueOf(power).concat(" - ")).concat("degree:").concat(String.valueOf(degree)));
+            }
+        });
+
+        DataSingelton dataSingelton = DataSingelton.getInstance();
+        dataSingelton.setmJSDrone(mJSDrone);
+        joystickView.setSelectListener();
     }
 
     @Override
@@ -97,20 +112,18 @@ public class JSActivity extends AppCompatActivity {
             }
             ((TextView) findViewById(R.id.VolumeSw)).setText("Volume ON");
             mJSDrone.volumeOnOff((byte) 100);
-
         }
     }
+
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-        // Checks the orientation of the screen
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            Log.i(TAG, "landsacape");
+            Log.i(TAG, "landscape");
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
             Log.i(TAG, "flip to portrait");
-            //TODO
             if (mJSDrone != null)
             {
                 Toast.makeText(getBaseContext(), "Disconnecting ...", Toast.LENGTH_SHORT).show();
@@ -140,7 +153,7 @@ public class JSActivity extends AppCompatActivity {
     private void initIHM() {
         mVideoView = (JSVideoView) findViewById(R.id.videoView);
 
-        findViewById(R.id.takePictureBt).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.takePictureJBt).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 mJSDrone.takePicture();
                 Toast.makeText(getBaseContext(), "Picture was taken", Toast.LENGTH_LONG).show();
@@ -171,7 +184,7 @@ public class JSActivity extends AppCompatActivity {
         findViewById(R.id.Right90Bt).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                mJSDrone.turndegree((float)Math.PI/2);
+                mJSDrone.turndegree((float) Math.PI / 2);
                 mJSDrone.setFlag((byte) 1);
                 mJSDrone.setFlag((byte) 0);
                 Log.i(TAG, "turn left 90");
@@ -239,13 +252,13 @@ public class JSActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.jump_longBt).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.jump_longJBt).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 mJSDrone.jump_long();
             }
         });
 
-        findViewById(R.id.jump_highBt).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.jump_highJBt).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 mJSDrone.jump_high();
             }
@@ -265,8 +278,18 @@ public class JSActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.JoystickBt).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
 
+                Intent intent = new Intent(JSActivity.this, JSJoystickActivity.class);
+                int[] sendData = new int[]{GbatteryPercentage, GpicCount};
+                intent.putExtra("data", sendData);
 
+                if (intent != null) {
+                    startActivity(intent);
+                }
+            }
+        });
 
 
         findViewById(R.id.turnaroundBt).setOnClickListener(new View.OnClickListener() {
@@ -417,7 +440,7 @@ public class JSActivity extends AppCompatActivity {
             }
         });
 
-        mBatteryLabel = (TextView) findViewById(R.id.batteryLabel);
+        mBatteryLabel = (TextView) findViewById(R.id.batteryLabelJ);
     }
 
     private final JSDrone.Listener mJSListener = new JSDrone.Listener() {
@@ -443,7 +466,8 @@ public class JSActivity extends AppCompatActivity {
         @Override
         public void onBatteryChargeChanged(int batteryPercentage) {
             mBatteryLabel.setText(String.format("%d%%", batteryPercentage));
-            Log.i(TAG,"battery: " + String.format("%d%%", batteryPercentage));
+            Log.i(TAG, "battery: " + String.format("%d%%", batteryPercentage));
+            GbatteryPercentage = batteryPercentage;
         }
 
         @Override
@@ -451,7 +475,6 @@ public class JSActivity extends AppCompatActivity {
         }
 
         public void onPictureCount(int picCount) {
-            //mPicCount.setText(String.format("%d", picCount));
             GpicCount = picCount;
             runThread();
         }

@@ -21,7 +21,13 @@
 
         <activity
             android:name=".activity.JSActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"/>
+            android:configChanges="orientation|keyboardHidden|screenSize">
+        </activity>
+
+        <activity
+            android:name=".activity.JSJoystickActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize">
+        </activity>
 
     </application>
 

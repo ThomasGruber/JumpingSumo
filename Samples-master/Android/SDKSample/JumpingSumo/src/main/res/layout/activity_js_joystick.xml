@@ -1,0 +1,134 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.JSJoystickActivity"
+    android:id="@+id/piloting_viewJ">
+
+    <com.parrot.sdksample.view.JSVideoView
+        android:id="@+id/videoViewJ"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Take picture"
+        android:id="@+id/takePictureJBt"
+
+        android:textSize="11.5dp"
+        android:layout_above="@+id/turnaroundJBt"
+        android:layout_alignRight="@+id/PicCountJ"
+        android:layout_alignEnd="@+id/PicCountJ"
+        android:layout_alignLeft="@+id/JoystickJBt"
+        android:layout_alignStart="@+id/JoystickJBt" />
+
+
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="Jump_high"
+        android:id="@+id/jump_highJBt"
+        android:textSize="14dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/PicCountJ"
+        android:layout_alignEnd="@+id/PicCountJ" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Jump_Long"
+        android:id="@+id/jump_longJBt"
+        android:width="150dp"
+        android:textSize="12dp"
+        android:layout_below="@+id/jump_highJBt"
+        android:layout_alignRight="@+id/jump_highJBt"
+        android:layout_alignEnd="@+id/jump_highJBt" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Battery: "
+        android:id="@+id/BatteryTxtJ"
+        android:textColor="#ff0000"
+        android:layout_below="@+id/jump_longJBt"
+        android:layout_alignLeft="@+id/jump_longJBt"
+        android:layout_alignStart="@+id/jump_longJBt"
+        android:textSize="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="XXX%"
+        android:id="@+id/batteryLabelJ"
+        android:textColor="#ff0000"
+        android:textSize="10dp"
+        android:layout_alignTop="@+id/BatteryTxtJ"
+        android:layout_alignRight="@+id/jump_longJBt"
+        android:layout_alignEnd="@+id/jump_longJBt" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="turn around"
+        android:id="@+id/turnaroundJBt"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/joystickviewJS"
+        android:layout_alignLeft="@+id/takePictureJBt"
+        android:layout_alignStart="@+id/takePictureJBt" />
+
+    <com.support.JoystickView
+        android:id="@+id/joystickviewJS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/takePictureJBt"
+        android:layout_toStartOf="@+id/takePictureJBt"
+        android:layout_marginRight="68dp"
+        android:layout_marginEnd="68dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="PictureCount: "
+        android:id="@+id/PicCountTxtJ"
+        android:textColor="#1fa90d"
+        android:textStyle="bold"
+        android:textSize="10dp"
+        android:layout_alignTop="@+id/PicCountJ"
+        android:layout_alignLeft="@+id/BatteryTxtJ"
+        android:layout_alignStart="@+id/BatteryTxtJ" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="XX"
+        android:id="@+id/PicCountJ"
+        android:textColor="#1fa90d"
+        android:textStyle="bold"
+        android:textSize="10dp"
+        android:layout_below="@+id/batteryLabelJ"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="BACK"
+        android:id="@+id/JoystickJBt"
+        android:layout_above="@+id/takePictureJBt"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignLeft="@+id/PicCountTxtJ"
+        android:layout_alignStart="@+id/PicCountTxtJ" />
+
+
+</RelativeLayout>

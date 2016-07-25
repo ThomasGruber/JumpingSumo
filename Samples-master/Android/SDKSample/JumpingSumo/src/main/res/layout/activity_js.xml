@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Take picture"
-        android:id="@+id/takePictureBt"
+        android:id="@+id/takePictureJBt"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:width="150dp"/>
@@ -69,7 +69,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Jump_Long"
-        android:id="@+id/jump_longBt"
+        android:id="@+id/jump_longJBt"
         android:width="150dp"
         android:layout_above="@+id/PicCountTxt"
         android:layout_alignLeft="@+id/forwardBt"
@@ -79,7 +79,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Jump_high"
-        android:id="@+id/jump_highBt"
+        android:id="@+id/jump_highJBt"
         android:layout_above="@+id/PicCountTxt"
         android:layout_centerHorizontal="true" />
 
@@ -90,7 +90,9 @@
         android:id="@+id/animationBt"
         android:layout_above="@+id/downloadBt"
         android:layout_alignRight="@+id/turnaroundBt"
-        android:layout_alignEnd="@+id/turnaroundBt" />
+        android:layout_alignEnd="@+id/turnaroundBt"
+        android:layout_alignLeft="@+id/JoystickBt"
+        android:layout_alignStart="@+id/JoystickBt" />
 
     <Button
         android:layout_width="wrap_content"
@@ -99,14 +101,16 @@
         android:id="@+id/turnaroundBt"
         android:layout_below="@+id/Right90Bt"
         android:layout_alignRight="@+id/PicCount"
-        android:layout_alignEnd="@+id/PicCount" />
+        android:layout_alignEnd="@+id/PicCount"
+        android:layout_toRightOf="@+id/Right180Bt"
+        android:layout_toEndOf="@+id/Right180Bt" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Battery: "
-        android:id="@+id/textView"
+        android:id="@+id/BatteryTxtJ"
         android:textColor="#ff0000"
         android:layout_below="@+id/PicCountTxt"
         android:layout_toRightOf="@+id/Right90Bt"
@@ -117,9 +121,9 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="XXX%"
-        android:id="@+id/batteryLabel"
+        android:id="@+id/batteryLabelJ"
         android:textColor="#ff0000"
-        android:layout_alignTop="@+id/textView"
+        android:layout_alignTop="@+id/BatteryTxtJ"
         android:layout_alignRight="@+id/PicCount"
         android:layout_alignEnd="@+id/PicCount" />
 
@@ -140,9 +144,9 @@
         android:text="XX"
         android:id="@+id/PicCount"
         android:textColor="#1fa90d"
-        android:layout_below="@+id/takePictureBt"
-        android:layout_alignRight="@+id/takePictureBt"
-        android:layout_alignEnd="@+id/takePictureBt"
+        android:layout_below="@+id/takePictureJBt"
+        android:layout_alignRight="@+id/takePictureJBt"
+        android:layout_alignEnd="@+id/takePictureJBt"
         android:textStyle="bold" />
 
     <TextView
@@ -152,9 +156,9 @@
         android:text="PictureCount: "
         android:id="@+id/PicCountTxt"
         android:textColor="#1fa90d"
-        android:layout_below="@+id/takePictureBt"
-        android:layout_alignLeft="@+id/takePictureBt"
-        android:layout_alignStart="@+id/takePictureBt"
+        android:layout_below="@+id/takePictureJBt"
+        android:layout_alignLeft="@+id/takePictureJBt"
+        android:layout_alignStart="@+id/takePictureJBt"
         android:textStyle="bold" />
 
     <Button
@@ -204,8 +208,8 @@
         android:textColor="#1fa90d"
         android:inputType="number"
         android:layout_alignTop="@+id/leftBt"
-        android:layout_toRightOf="@+id/batteryLabel"
-        android:layout_toEndOf="@+id/batteryLabel" />
+        android:layout_toRightOf="@+id/batteryLabelJ"
+        android:layout_toEndOf="@+id/batteryLabelJ" />
 
     <Button
         android:layout_width="wrap_content"
@@ -241,6 +245,27 @@
         android:layout_above="@+id/downloadBt"
         android:layout_toRightOf="@+id/rightBt"
         android:layout_toEndOf="@+id/rightBt" />
-    
+
+    <com.support.JoystickView
+        android:id="@+id/joystickviewJ"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/backwardBt"
+        android:layout_alignRight="@+id/backwardBt"
+        android:layout_alignEnd="@+id/backwardBt"
+        android:layout_alignLeft="@+id/backwardBt"
+        android:layout_alignStart="@+id/backwardBt"
+        android:layout_alignBottom="@+id/VolumeSw" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Joystick"
+        android:id="@+id/JoystickBt"
+        android:layout_above="@+id/animationBt"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@+id/Right180Bt"
+        android:layout_toEndOf="@+id/Right180Bt" />
 
 </RelativeLayout>

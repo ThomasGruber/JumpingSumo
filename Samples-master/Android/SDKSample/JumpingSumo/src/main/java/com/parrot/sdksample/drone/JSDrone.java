@@ -2,6 +2,8 @@ package com.parrot.sdksample.drone;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -36,6 +38,7 @@ import com.parrot.arsdk.arutils.ARUtilsException;
 import com.parrot.arsdk.arutils.ARUtilsFtpConnection;
 import com.parrot.arsdk.arutils.ARUtilsManager;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -288,6 +291,41 @@ public class JSDrone {
             mDeviceController.getFeatureJumpingSumo().sendAudioSettingsMasterVolume(volume);
             Log.i(TAG, "volume to " + volume);
 
+        }
+    }
+
+    public void drive( int power, int degree){
+
+
+        float turn;
+        int maxdegree = 90;
+        if (degree > maxdegree) {
+            turn = maxdegree - (degree - maxdegree);
+        } else {
+            turn = degree;
+        }
+        if(degree < 0) {
+            if(degree < -maxdegree) {
+                turn = -maxdegree - (degree + maxdegree);
+            } else {
+                turn = degree;
+            }
+        }
+        turn = Math.round(turn / maxdegree * 10);
+        if(!((degree > 0 && degree < 90) || (degree < 0 && degree > -90))) {
+            power = -power;
+        }
+        //Log.i(TAG, "1power drive called: " + (byte)power + " degree: " + (byte)degree + " turn: " + turn);
+        float factor = (100-(Math.abs(turn)*10))/100;
+        power = Math.round(power * factor);
+        //Log.i(TAG, "2power drive called: " + (byte)power + " degree: " + (byte)degree + " turn: " + turn);
+
+        setSpeed((byte)power);
+        setTurn((byte)turn);
+        if(power != 0) {
+            setFlag((byte) 1);
+        } else {
+            setFlag((byte) 0);
         }
     }
 
