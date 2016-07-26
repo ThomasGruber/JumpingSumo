@@ -110,8 +110,8 @@ public class JSActivity extends AppCompatActivity {
             if (!mJSDrone.connect()) {
                 finish();
             }
-            ((TextView) findViewById(R.id.VolumeSw)).setText("Volume ON");
-            mJSDrone.volumeOnOff((byte) 100);
+            ((TextView) findViewById(R.id.VolumeSw)).setText("Volume OFF");
+            mJSDrone.volumeOnOff((byte) 0);
         }
     }
 

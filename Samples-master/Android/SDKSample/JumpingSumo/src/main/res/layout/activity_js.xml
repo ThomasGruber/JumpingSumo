@@ -225,7 +225,7 @@
         android:layout_height="wrap_content"
         android:text=" Volume ON"
         android:id="@+id/VolumeSw"
-        android:checked="true"
+        android:checked="false"
         android:background="#cccccc"
         android:layout_below="@+id/SoundSm"
         android:layout_alignRight="@+id/SoundSm"
